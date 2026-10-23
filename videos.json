@@ -1,5 +1,18 @@
 [
   {
+    "slug": "yale",
+    "title": "Yale: Fraser Canyon",
+    "country": "Canada",
+    "region": "British Columbia",
+    "location": "Yale, BC",
+    "date": "2026-10-22",
+    "summary": "Low over the Fraser River, where the freight trains follow the canyon.",
+    "story": "The small gold-rush town of Yale sits at the mouth of the Fraser Canyon. Fast green water, steep forested walls and a long freight train winding along the riverbank.",
+    "tags": ["rivers", "drone", "trains", "fraser-canyon"],
+    "file": "videos/yale.mp4",
+    "thumbnail": "images/yale.jpg"
+  },
+  {
     "slug": "saskatchewan-river-crossing",
     "title": "Saskatchewan River Crossing",
     "country": "Canada",
