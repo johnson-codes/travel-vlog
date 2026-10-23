@@ -1,5 +1,18 @@
 [
   {
+    "slug": "saskatchewan-river-crossing",
+    "title": "Saskatchewan River Crossing",
+    "country": "Canada",
+    "region": "Alberta",
+    "location": "Icefields Parkway, AB",
+    "date": "2026-10-22",
+    "summary": "Rising through the spruce over a braided river valley.",
+    "story": "Where the North Saskatchewan River meets the Icefields Parkway, braided channels wind through a wide valley of spruce and gravel bars, seen from just above the treetops.",
+    "tags": ["rockies", "rivers", "drone", "road-trip"],
+    "file": "videos/saskatchewan-river-crossing.mp4",
+    "thumbnail": "images/saskatchewan-river-crossing.jpg"
+  },
+  {
     "slug": "duffey-lake-epic",
     "title": "Duffey Lake",
     "country": "Canada",
