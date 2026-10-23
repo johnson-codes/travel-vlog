@@ -21,7 +21,7 @@ function thumbStyle(v, i) {
   if (v.thumbnail && SAFE_PATH.test(v.thumbnail)) return `background-image:url('${esc(v.thumbnail)}')`;
   if (v.youtube && YT_ID.test(v.youtube)) return `background-image:url('https://i.ytimg.com/vi/${v.youtube}/hqdefault.jpg')`;
   const c = PALETTE[i % PALETTE.length];
-  return `background:linear-gradient(135deg, ${c}, #111)`;
+  return `background:linear-gradient(135deg, ${c}, #2a2622)`;
 }
 
 function playerHTML(v) {
