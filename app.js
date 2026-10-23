@@ -67,13 +67,32 @@ function renderHome() {
   const countries = ["All", ...new Set(videos.map(place).filter(Boolean))];
   const list = activeFilter === "All" ? videos : videos.filter((v) => place(v) === activeFilter);
 
+  const latest = videos[0];
+  const regions = countries.length - 1;
+
   app.innerHTML = `
     <section class="intro">
-      <h1>Stories from the <em>road</em>.</h1>
-      <p>Short films and notes from places I've wandered: the food, the people, the views.</p>
+      <div class="intro-text">
+        <span class="kicker"><span class="dot"></span>Western Canada · ${new Date().getFullYear()}</span>
+        <h1>Stories from the <em>road</em>.</h1>
+        <p>Short films from the lakes, peaks and back roads I've wandered, made to feel like you were there.</p>
+        <div class="intro-actions">
+          <a class="btn" href="#/v/${encodeURIComponent(latest.slug)}"><span class="btn-play" aria-hidden="true"></span>Watch latest film</a>
+          <a class="link-quiet" href="#films">Browse all →</a>
+        </div>
+        <dl class="stats">
+          <div><dt>${videos.length}</dt><dd>films</dd></div>
+          <div><dt>${regions}</dt><dd>${regions === 1 ? "region" : "regions"}</dd></div>
+          <div><dt>1080p</dt><dd>quality</dd></div>
+        </dl>
+      </div>
+      <a class="intro-media" href="#/v/bow-lake-glacier-blue" aria-label="Watch Bow Lake: Glacier Blue">
+        <video src="videos/hero-loop.mp4" poster="images/hero-poster.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+        <span class="media-tag"><span class="dot"></span>Now showing · Bow Lake, AB</span>
+      </a>
     </section>
 
-    <section>
+    <section id="films">
       <div class="filters" role="group" aria-label="Filter by region">
         ${countries.map((c) => `<button class="chip" aria-pressed="${c === activeFilter}" data-filter="${esc(c)}">${esc(c)}</button>`).join("")}
       </div>
