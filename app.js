@@ -15,13 +15,14 @@ const SAFE_PATH = /^(videos|images)\/[A-Za-z0-9._\/-]+$/; // local files only
 const fmtDate = (d) =>
   d ? new Date(d + "T00:00:00").toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "";
 
-const PALETTE = ["#c2410c", "#0f766e", "#7c3aed", "#b45309", "#1d4ed8", "#be185d"];
+// Soft pastel placeholders until a real thumbnail exists
+const PALETTE = [["#f6d7c3", "#eab69a"], ["#cfe3dc", "#a9cbbf"], ["#dcd6ee", "#bdb3de"], ["#f3e3b8", "#e3cb8a"], ["#cfdcef", "#a9c0e0"]];
 
 function thumbStyle(v, i) {
   if (v.thumbnail && SAFE_PATH.test(v.thumbnail)) return `background-image:url('${esc(v.thumbnail)}')`;
   if (v.youtube && YT_ID.test(v.youtube)) return `background-image:url('https://i.ytimg.com/vi/${v.youtube}/hqdefault.jpg')`;
-  const c = PALETTE[i % PALETTE.length];
-  return `background:linear-gradient(135deg, ${c}, #2a2622)`;
+  const [a, b] = PALETTE[i % PALETTE.length];
+  return `background:linear-gradient(160deg, ${a}, ${b})`;
 }
 
 function playerHTML(v) {
@@ -37,17 +38,12 @@ function playerHTML(v) {
 }
 
 function card(v, i) {
-  const hasImg = (v.thumbnail && SAFE_PATH.test(v.thumbnail)) || (v.youtube && YT_ID.test(v.youtube));
   return `
     <a class="card" href="#/v/${encodeURIComponent(v.slug)}">
-      <div class="thumb ${hasImg ? "" : "ph"}" style="${thumbStyle(v, i)}">
-        ${hasImg ? "" : esc((v.country || "✈").slice(0, 2))}
-        <span class="play" aria-hidden="true"></span>
-        ${v.country ? `<span class="badge">${esc(v.country)}</span>` : ""}
-      </div>
+      <div class="thumb" style="${thumbStyle(v, i)}"><span class="play" aria-hidden="true"></span></div>
       <div class="card-body">
+        <div class="meta">${esc(v.location || v.country || "")}${(v.location || v.country) && v.date ? " · " : ""}${esc(fmtDate(v.date))}</div>
         <h3>${esc(v.title)}</h3>
-        <div class="meta">${esc(v.location || "")}${v.location && v.date ? " · " : ""}${esc(fmtDate(v.date))}</div>
       </div>
     </a>`;
 }
@@ -67,26 +63,19 @@ function renderHome() {
     app.innerHTML = `<div class="state"><h2>No vlogs yet</h2><p>Add your first trip to videos.json and it will appear here.</p></div>`;
     return;
   }
-  const featured = videos.find((v) => v.featured) || videos[0];
-  const countries = ["All", ...new Set(videos.map((v) => v.country).filter(Boolean))];
-  const list = activeFilter === "All" ? videos : videos.filter((v) => v.country === activeFilter);
+  const place = (v) => v.region || v.country;
+  const countries = ["All", ...new Set(videos.map(place).filter(Boolean))];
+  const list = activeFilter === "All" ? videos : videos.filter((v) => place(v) === activeFilter);
 
   app.innerHTML = `
-    <section class="hero" style="${thumbStyle(featured, 0)}">
-      <div class="hero-body">
-        <span class="eyebrow">Latest from the road</span>
-        <h1>${esc(featured.title)}</h1>
-        <p>${esc(featured.summary || "")}</p>
-        <a class="btn" href="#/v/${encodeURIComponent(featured.slug)}">▶ Watch the vlog</a>
-      </div>
+    <section class="intro">
+      <h1>Stories from the <em>road</em>.</h1>
+      <p>Short films and notes from places I've wandered: the food, the people, the views.</p>
     </section>
 
     <section>
-      <div class="section-head">
-        <h2>All vlogs</h2>
-        <div class="filters" role="group" aria-label="Filter by country">
-          ${countries.map((c) => `<button class="chip" aria-pressed="${c === activeFilter}" data-filter="${esc(c)}">${esc(c)}</button>`).join("")}
-        </div>
+      <div class="filters" role="group" aria-label="Filter by region">
+        ${countries.map((c) => `<button class="chip" aria-pressed="${c === activeFilter}" data-filter="${esc(c)}">${esc(c)}</button>`).join("")}
       </div>
       <div class="grid">${list.map((v) => card(v, videos.indexOf(v))).join("")}</div>
     </section>`;
@@ -103,7 +92,7 @@ function renderVideo(slug) {
   setNav("");
   const v = videos.find((x) => x.slug === slug);
   if (!v) {
-    app.innerHTML = `<div class="state"><h2>Vlog not found</h2><a class="btn ghost" href="#/">← Back to all vlogs</a></div>`;
+    app.innerHTML = `<div class="state"><h2>Vlog not found</h2><a class="link" href="#/">Back to all vlogs</a></div>`;
     return;
   }
   app.innerHTML = `
@@ -111,9 +100,8 @@ function renderVideo(slug) {
       <a class="back" href="#/">← All vlogs</a>
       <div class="player">${playerHTML(v)}</div>
       <div class="video-info">
-        <span class="eyebrow">${esc(v.country || "")}</span>
+        <span class="eyebrow">${esc(v.location || v.country || "")} · ${esc(fmtDate(v.date))}</span>
         <h1>${esc(v.title)}</h1>
-        <div class="meta">📍 ${esc(v.location || "Somewhere")} · ${esc(fmtDate(v.date))}</div>
         <p class="story">${esc(v.story || v.summary || "")}</p>
         ${v.tags?.length ? `<div class="tags">${v.tags.map((t) => `<span class="tag">#${esc(t)}</span>`).join("")}</div>` : ""}
       </div>
@@ -125,11 +113,10 @@ function renderAbout() {
   setNav("about");
   app.innerHTML = `
     <section class="prose">
-      <span class="eyebrow">About</span>
       <h1>Hi, I'm Johnson.</h1>
       <p>I travel, film what I find, and share it here: the food, the people, the long bus rides and the views that make it all worth it.</p>
       <p>New vlogs drop whenever I find good Wi-Fi. Thanks for watching!</p>
-      <a class="btn" href="#/">Watch the vlogs</a>
+      <p><a class="link" href="#/">Watch the vlogs →</a></p>
     </section>`;
 }
 
