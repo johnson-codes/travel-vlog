@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "manning-park-weekend",
+    "title": "A Weekend in Manning Park",
+    "country": "Canada",
+    "location": "Manning Park, BC",
+    "date": "2026-09-14",
+    "featured": true,
+    "summary": "Alpine lakes, larch trails and a very cold sunrise in BC's backcountry.",
+    "story": "Sample entry — replace with your own story.\n\nWe drove out early on Saturday, hiked the Lightning Lakes loop, and camped under more stars than I've seen in years.",
+    "tags": ["hiking", "camping", "bc"],
+    "youtube": "",
+    "file": "",
+    "thumbnail": ""
+  },
+  {
+    "slug": "tokyo-street-food",
+    "title": "48 Hours of Tokyo Street Food",
+    "country": "Japan",
+    "location": "Tokyo",
+    "date": "2026-07-02",
+    "summary": "Yakitori alleys, 7-Eleven egg sandos and the best ramen of my life.",
+    "story": "Sample entry — replace with your own story.",
+    "tags": ["food", "city"],
+    "youtube": "",
+    "file": "",
+    "thumbnail": ""
+  },
+  {
+    "slug": "lisbon-on-foot",
+    "title": "Lisbon on Foot",
+    "country": "Portugal",
+    "location": "Lisbon",
+    "date": "2026-05-20",
+    "summary": "Seven hills, one tram, and too many pastéis de nata.",
+    "story": "Sample entry — replace with your own story.",
+    "tags": ["city", "europe"],
+    "youtube": "",
+    "file": "",
+    "thumbnail": ""
+  }
+]
